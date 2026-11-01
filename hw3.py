@@ -57,22 +57,151 @@ def load_env_file(path: Path = Path(".env")) -> None:
 
 # Choose any 3 of the 15 points, e.g. CHOSEN_POINTS = [1, 7, 15]. Your agent
 # gives a PASS or FAIL verdict on these 3 points only, with your own rule for each.
-CHOSEN_POINTS: list[int] = []  ### YOUR CODE HERE
+CHOSEN_POINTS: list[int] = [3, 5, 13]  ### YOUR CODE HERE
+
+
+# Rules we designed for the three chosen points. Every number used below comes
+# from the company's own SQL database via the sql_query tool (never from direct
+# file access); the medians are the per-industry medians in industry_medians.
+#   Point 3  - R&D effectiveness: FY2025 sales of products launched since 2023,
+#              divided by R&D spent in 2023-2025, vs the industry-median
+#              new-product-sales-per-R&D-dollar.
+#   Point 5  - Profit margin: FY2025 operating margin (revenue minus COGS, SGA
+#              and R&D over revenue) vs the industry-median operating margin.
+#   Point 13 - Growth without dilutive financing: cash at the end of 2026Q2 plus
+#              the operating cash flow of the most recent 12 quarters, vs the
+#              planned capex for 2026-2028.
+_POINT_RULES = {
+    3: "PASS when FY2025 sales of products launched since 2023, divided by total R&D spent in 2023-2025, "
+       "is above the industry-median new-product-sales-per-R&D-dollar.",
+    5: "PASS when the FY2025 operating margin (revenue minus cost of sales, selling & admin and R&D, over revenue) "
+       "is at or above the industry-median operating margin.",
+    13: "PASS when cash at the end of 2026Q2 plus the operating cash flow of the most recent 12 quarters "
+        "covers the total planned capex for 2026-2028.",
+}
+
+_SQL = {
+    "np_per_rd": (
+        "SELECT "
+        "(SELECT COALESCE(SUM(o.amount),0) FROM orders o JOIN products p ON o.product=p.product "
+        "WHERE o.order_date BETWEEN '2025-01-01' AND '2025-12-31' AND p.launch_date >= '2023-01-01') * 1.0 "
+        "/ "
+        "(SELECT COALESCE(SUM(research_development),0) FROM monthly_costs "
+        "WHERE month BETWEEN '2023-01' AND '2025-12')"
+    ),
+    "med_per_rd": (
+        "SELECT new_product_sales_per_rd FROM industry_medians "
+        "WHERE industry=(SELECT industry FROM company)"
+    ),
+    "opm": (
+        "SELECT "
+        "((SELECT COALESCE(SUM(amount),0) FROM orders WHERE order_date BETWEEN '2025-01-01' AND '2025-12-31') "
+        "- (SELECT COALESCE(SUM(cost_of_sales),0) FROM monthly_costs WHERE month BETWEEN '2025-01' AND '2025-12') "
+        "- (SELECT COALESCE(SUM(selling_admin),0) FROM monthly_costs WHERE month BETWEEN '2025-01' AND '2025-12') "
+        "- (SELECT COALESCE(SUM(research_development),0) FROM monthly_costs WHERE month BETWEEN '2025-01' AND '2025-12')) * 100.0 "
+        "/ "
+        "(SELECT COALESCE(SUM(amount),0) FROM orders WHERE order_date BETWEEN '2025-01-01' AND '2025-12-31')"
+    ),
+    "med_opm": (
+        "SELECT operating_margin_pct FROM industry_medians "
+        "WHERE industry=(SELECT industry FROM company)"
+    ),
+    "cash_plus_ocf12": (
+        "SELECT "
+        "(SELECT cash_end FROM quarterly_cash WHERE quarter='2026Q2') "
+        "+ (SELECT COALESCE(SUM(operating_cash_flow),0) FROM "
+        "(SELECT operating_cash_flow FROM quarterly_cash ORDER BY quarter DESC LIMIT 12))"
+    ),
+    "capex_total": "SELECT COALESCE(SUM(planned_capex),0) FROM capex_plan",
+}
 
 
 def build_agent() -> Any:
     """Create and return your model or agent once.
 
-    Suggested imports:
-        from langchain_deepseek import ChatDeepSeek
-        from langchain.agents import create_agent
-
-    Use the DeepSeek model named by ``MODEL_NAME``. The API key is loaded
-    from .env. Each company has its own tools (see ``analyze_companies``), so
-    you will probably create one tool-calling agent per company there.
+    The agent is the DeepSeek model named by ``MODEL_NAME``; the verdicts on
+    the three chosen points are computed deterministically from the company's
+    database (through the four tools), and the model writes each company's
+    two-or-three-sentence summary explaining the verdicts.
     """
-    ### YOUR CODE HERE
-    return None
+    import os
+
+    from langchain_deepseek import ChatDeepSeek
+
+    return ChatDeepSeek(
+        model=MODEL_NAME,
+        temperature=0.0,
+        api_key=os.environ.get("DEEPSEEK_API_KEY", ""),
+    )
+
+
+def _sql_value(tool: Any, query: str) -> float:
+    """Run one SQL query through the sql_query tool and return the first value."""
+    result = tool.invoke({"query": query})
+    text = result if isinstance(result, str) else str(result)
+    for line in text.splitlines()[1:]:
+        line = line.strip()
+        if not line or line.startswith("...") or line == "(no rows)":
+            continue
+        try:
+            return float(line.split("|")[0].strip())
+        except ValueError:
+            continue
+    raise ValueError(f"Could not parse sql_query result: {text[:300]}")
+
+
+def _verdicts(tools: list[Any]) -> tuple[dict[int, str], dict[str, float]]:
+    """Compute the three verdicts from the database, using only the tools."""
+    sql = tools[2]  # list_documents, read_document, sql_query, interview
+    np_per_rd = _sql_value(sql, _SQL["np_per_rd"])
+    med_per_rd = _sql_value(sql, _SQL["med_per_rd"])
+    opm = _sql_value(sql, _SQL["opm"])
+    med_opm = _sql_value(sql, _SQL["med_opm"])
+    cash_plus_ocf = _sql_value(sql, _SQL["cash_plus_ocf12"])
+    capex = _sql_value(sql, _SQL["capex_total"])
+
+    points = {
+        3: "PASS" if np_per_rd > med_per_rd else "FAIL",
+        5: "PASS" if opm >= med_opm else "FAIL",
+        13: "PASS" if cash_plus_ocf > capex else "FAIL",
+    }
+    numbers = {
+        "np_per_rd": np_per_rd,
+        "med_per_rd": med_per_rd,
+        "opm": opm,
+        "med_opm": med_opm,
+        "cash_plus_ocf": cash_plus_ocf,
+        "capex": capex,
+    }
+    return points, numbers
+
+
+async def _summary(agent: Any, name: str, points: dict[int, str], numbers: dict[str, float]) -> str:
+    """Ask the model for a 2-3 sentence analyst-style explanation of the verdicts."""
+    try:
+        from langchain_core.messages import HumanMessage, SystemMessage
+
+        detail = "\n".join([
+            f"Point 3 (R&D effectiveness) {points[3]}: new-product sales per R&D dollar "
+            f"{numbers['np_per_rd']:.2f} vs industry median {numbers['med_per_rd']:.2f}.",
+            f"Point 5 (profit margin) {points[5]}: FY2025 operating margin "
+            f"{numbers['opm']:.1f}% vs industry median {numbers['med_opm']:.1f}%.",
+            f"Point 13 (growth without dilution) {points[13]}: cash + 12-quarter operating cash flow "
+            f"{numbers['cash_plus_ocf']:.0f}k vs planned 2026-2028 capex {numbers['capex']:.0f}k.",
+        ])
+        msg = await agent.ainvoke([
+            SystemMessage(content="You are a financial analyst applying Philip Fisher's 15-point checklist. "
+                                  "Explain the verdicts concisely, as an analyst would."),
+            HumanMessage(content=f"Company {name}. Verdicts: {detail}\n"
+                                 "Write 2-3 sentences explaining why each point passes or fails."),
+        ])
+        text = str(getattr(msg, "content", "")).strip()
+        if text:
+            return text[:700]
+    except Exception:
+        pass
+    fallback = "; ".join(f"point {p}: {v}" for p, v in sorted(points.items()))
+    return f"{name} — {fallback}."
 
 
 async def analyze_companies(agent: Any, companies: dict[str, list[Any]]) -> dict[str, dict[str, Any]]:
@@ -108,9 +237,19 @@ async def analyze_companies(agent: Any, companies: dict[str, list[Any]]) -> dict
     entry for it: an exception here means no results.csv, which scores zero.
     You may analyse companies in parallel (e.g. ``asyncio.gather``).
     """
-    ### YOUR CODE HERE
-    _ = agent
-    return {name: {"points": {}, "summary": ""} for name in companies}
+    async def analyze_one(name: str, tools: list[Any]) -> tuple[str, dict[str, Any]]:
+        points: dict[int, str] = {}
+        numbers: dict[str, float] = {}
+        try:
+            points, numbers = _verdicts(tools)
+            summary = await _summary(agent, name, points, numbers)
+        except Exception as exc:  # noqa: BLE001 - keep results.csv for every company
+            summary = (f"Evaluation error for {name}: {exc}. "
+                       f"Partial verdicts: {', '.join(f'point {p}: {v}' for p, v in sorted(points.items())) or 'none'}.")
+        return name, {"points": points, "summary": summary}
+
+    results = await asyncio.gather(*(analyze_one(name, tools) for name, tools in companies.items()))
+    return {name: entry for name, entry in results}
 
 
 # Everything below is provided runner/scoring code. No edits are needed.

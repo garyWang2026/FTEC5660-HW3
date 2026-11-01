@@ -171,13 +171,114 @@ companies with the same tools and the same answer key rules, but different
 names and wording, and scores your 3 points only.
 
 ## Homework 3 solution:
-> to students: this is your report, see the homework description.
 
 ### My 3 points and rules
-> for each point: why you chose it, your PASS rule in one or two sentences, and the evidence it uses. Quote Fisher where it helps.
+
+I chose **points 3, 5 and 13**, the three database-only points on the list.
+Fisher's own words for point 3 ask *"how effective are the company's research
+and development efforts in relation to its size?"*, point 5 asks *"does the
+company have a worthwhile profit margin?"*, and point 13 asks whether *"the
+growth of the company"* will require *"sufficient equity financing"* that would
+dilute existing stockholders. All three can be answered with hard numbers from
+`company.db` through `sql_query`, which makes the agent fast, deterministic and
+easy to verify — no interviews to spend, no documents to read, and no model
+arithmetic (the most common cause of wrong verdicts, per the tip in section
+3.3).
+
+**Point 3 — Effective R&D (PASS if new-product sales per R&D dollar beat the
+industry median).**
+FY2025 sales of products launched since 2023-01-01, divided by total R&D spent
+in 2023–2025, compared with the industry-median `new_product_sales_per_rd`.
+Fisher's point is that R&D should *produce* sellable products: "the results of
+research must show in the income statement." A company whose recent products
+generate more sales per R&D dollar than its industry's median clears the bar;
+one whose R&D converts poorly fails. Evidence: `orders` joined with
+`products.launch_date`, `monthly_costs.research_development`,
+`industry_medians.new_product_sales_per_rd`.
+
+**Point 5 — Worthwhile profit margin (PASS if FY2025 operating margin is at or
+above the industry median).**
+Operating margin = (revenue − cost of sales − selling & admin − R&D) ÷ revenue
+for FY2025, compared with `industry_medians.operating_margin_pct`. Fisher
+wants margins that are "high enough, in comparison with the company's
+competitors, to make the margin worthwhile." Beating the industry's median
+operating margin is exactly that comparison. Evidence: `orders` (revenue),
+`monthly_costs` (all three cost lines), `industry_medians.operating_margin_pct`.
+
+**Point 13 — Growth without dilutive financing (PASS if cash plus 12 quarters
+of operating cash flow covers planned capex).**
+Cash at the end of 2026Q2 plus operating cash flow of the most recent 12
+quarters, versus total planned capex for 2026–2028 in `capex_plan`. Fisher's
+fear is that fast growth forces "the issuance of additional stock, largely
+cancelling the benefit of the anticipated growth." If the company can fund its
+planned investment from the cash on hand and what the business itself
+generates, no dilution is needed and it passes; if the plan exceeds that
+funding, it will have to raise equity and it fails. Evidence:
+`quarterly_cash.cash_end` and `operating_cash_flow`, `capex_plan`.
 
 ### Design
-> a visualization of your agent design and one paragraph describing it.
+
+```
+                    ┌────────────────────────────────────────────┐
+                    │   build_agent() → ChatDeepSeek (v4-flash)  │
+                    │   (temperature 0, DeepSeek API key from .env) │
+                    └───────────────▲────────────────────────────┘
+                                    │ writes per-company summary
+┌───────────────────────────┐      │
+│ analyze_companies()       │──────┘
+│ per company (parallel):   │
+│                           │
+│  ┌─────────────────────┐  │   ┌──────────────────────────────┐
+│  │ tools[2] sql_query  │──┼──▶│ 1. np_per_rd (FY2025 sales of │
+│  └─────────────────────┘  │   │    products launched ≥2023 ÷  │
+│                           │   │    R&D 2023–2025)            │
+│  six SQL statements,      │   │ 2. opm (FY2025 revenue minus  │
+│  computed by SQL not      │   │    COGS/SGA/R&D, in %)        │
+│  by the model             │   │ 3. cash + 12-quarter OCF      │
+│                           │   │ 4. industry medians (per-RD,  │
+│                           │   │    operating margin)          │
+│                           │   │ 5. planned capex 2026–2028    │
+│                           │   └──────────┬───────────────────┘
+│                           │              ▼
+│  deterministic verdicts   │   point 3: np_per_rd > median → PASS
+│  points = {3,5,13}        │   point 5: opm ≥ median → PASS
+│                           │   point 13: cash+OCF > capex → PASS
+└───────────────────────────┘
+```
+
+Each company gets the four tools (`list_documents`, `read_document`,
+`sql_query`, `interview`) built by the provided runner. `analyze_companies`
+runs the companies in parallel with `asyncio.gather`. For every company it
+issues six SQL statements through the `sql_query` tool — never touching
+`company.db` directly and never doing arithmetic in the model's head — and
+compares each result with the company's own industry median (or its planned
+capex) to produce a deterministic PASS/FAIL for the three chosen points. The
+DeepSeek model is then called once per company to write the two-to-three
+sentence analyst-style summary explaining the verdicts, which lands in the
+`summary` column of `results.csv`. Any per-company exception (e.g. an API
+failure) is caught so the company still gets an entry and the run never
+crashes.
 
 ### Results
-> your point score on `public_test`, the companies where your verdicts disagree with the public answers, and why.
+
+On `public_test` (20 companies, 3 points each = 60 verdicts), the agent scores
+**60/60 correct, balanced point accuracy 100.0%**, i.e. both the true-PASS
+share and the true-FAIL share are 100%. With `CHOSEN_POINTS = [3, 5, 13]` the
+printed score was:
+
+```
+Processed 20 companies. Wrote results.csv. Your points: 3, 5, 13.
+Point accuracy: 60/60 (balanced: 100.0%).
+```
+
+The result was reproduced across three runs (grading takes the average of
+three). **There is no disagreement with the public answers** — the rules above
+match the answer key for every one of the 20 public companies, including all
+six FAIL cases per point (everline, falcrest, halcyon, ironbark, lindale,
+northwind on point 5; aurel, driftwood, dunmore, halcyon, ironbark, lindale on
+point 3; bramble, elmstead, emberly, granite, juniper, halcyon on point 13).
+The margin between each company's computed value and the rule line is
+comfortably large in every case (e.g. new-product sales per R&D dollar ranges
+from 0.87 to 2.62 against industry medians of 0.79 to 2.06), so the verdicts
+are stable and the same rules should transfer to the private set, which uses
+the same answer key rules.

@@ -1,0 +1,107 @@
+company,points,points_correct,point_errors,interviews_used,summary
+ashgrove_labs,3:PASS 5:PASS 13:PASS,3/3,,0,"**Point 3 — R&D effectiveness: PASS.** Ashgrove Labs generates $1.55 of new-product sales per R&D dollar versus a $1.21 industry median, indicating above-median conversion of research spend into commercial revenue. The gap suggests R&D is not just sustained but productively commercialized relative to peers.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 13.4% exceeds the 9.4% industry median by roughly 400 bps, reflecting better pricing power and/or cost discipline. This provides a profitability buffer above peers and supports the quality of growth.
+
+**Point 13 — Growth without dilution: PASS.** Cash plus 12-quarter operating cash flow of $570.5M covers planned 2026–2028 cape"
+aurel_systems,3:FAIL 5:PASS 13:PASS,3/3,,0,"**Point 3 — R&D effectiveness: FAIL.** Aurel Systems generates $1.61 of new-product sales per R&D dollar versus an industry median of $1.96, indicating below-peer conversion of research spending into commercial output. The gap suggests R&D is not yet translating efficiently into new-product revenue.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 12.6% exceeds the industry median of 10.3%, showing above-peer profitability. This supports Fisher’s margin criterion and indicates reasonable cost discipline and pricing power.
+
+**Point 13 — Growth without dilution: PASS.** Cash plus 12-quarter operating cash flow of $128.1M covers planned 2026–2028 capex of $119.2M, a modest but ade"
+bramble_labs,3:PASS 5:PASS 13:FAIL,3/3,,0,"**Point 3 — R&D effectiveness: PASS.** Bramble Labs generates $1.90 of new-product sales per R&D dollar versus an industry median of $1.60, indicating its R&D spend is converting into commercial output above the peer benchmark. The ~19% premium suggests relatively efficient innovation productivity.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 13.6% exceeds the industry median of 11.9%, indicating better cost discipline and/or pricing power than peers. The 170 bp spread supports the pass on profitability.
+
+**Point 13 — Growth without dilution: FAIL.** Cash plus 12-quarter operating cash flow of $155.5M covers only ~67% of planned 2026–2028 capex of $231.8M, leaving a ~$76.3M"
+cobalt_holdings,3:PASS 5:PASS 13:PASS,3/3,,0,"**Point 3 — R&D effectiveness: PASS**  
+New-product sales per R&D dollar are 2.62 vs. an industry median of 1.96, roughly 34% above the median. That indicates cobalt_holdings converts R&D spend into commercialized new products more efficiently than peers, supporting the pass.
+
+**Point 5 — Profit margin: PASS**  
+FY2025 operating margin is 14.2% vs. the industry median of 10.3%, a 390 bps premium. This suggests better cost control, pricing power, or mix than peers and supports the pass.
+
+**Point 13 — Growth without dilution: PASS**  
+Cash plus 12-quarter operating cash flow of 560,010k covers planned 2026–2028 capex of 329,668k by about 1.7x. That implies the growth plan can be funded interna"
+copperfield_technologies,3:PASS 5:PASS 13:PASS,3/3,,0,"**Point 3 — R&D effectiveness: PASS.** New-product sales per R&D dollar of 0.92 exceeds the industry median of 0.79, indicating Copperfield converts R&D spend into commercialized new products more efficiently than peers. This supports Fisher’s concern that R&D is productive rather than merely large.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 18.0% is meaningfully above the 15.1% industry median, suggesting better pricing power, cost discipline, or mix than competitors. The margin premium is consistent with a durable competitive position rather than margin compression.
+
+**Point 13 — Growth without dilution: PASS.** Cash plus 12-quarter operating cash flow of $583.9M comfor"
+driftwood_systems,3:FAIL 5:PASS 13:PASS,3/3,,0,"**Point 3 (R&D effectiveness) — FAIL:** New-product sales per R&D dollar are 1.08 versus an industry median of 1.58, so Driftwood is converting R&D spending into commercialized new-product revenue well below peers. That suggests weaker innovation productivity or slower commercialization, which is a clear Fisher-style red flag despite any absolute R&D spend.
+
+**Point 5 (profit margin) — PASS:** FY2025 operating margin of 13.6% exceeds the industry median of 11.4%, indicating better cost control, pricing power, or mix than the typical competitor. The ~220 bp spread gives Driftwood a reasonable profitability cushion versus peers.
+
+**Point 13 (growth without dilution) — PASS:** Cash plus 12-quar"
+dunmore_holdings,3:FAIL 5:PASS 13:PASS,3/3,,0,"**Point 3 — FAIL (R&D effectiveness):** New-product sales per R&D dollar are 0.87 versus the industry median of 1.33, so Dunmore is converting R&D spend into new-product revenue materially less efficiently than peers. The gap suggests weaker commercialization or innovation productivity, not merely lower R&D intensity.
+
+**Point 5 — PASS (profit margin):** FY2025 operating margin is 15.0% versus the 12.5% industry median, indicating better-than-peer cost control and/or pricing power. The 250 bp spread is a meaningful margin advantage in a checklist context.
+
+**Point 13 — PASS (growth without dilution):** Cash plus 12-quarter operating cash flow of $623,969k comfortably covers planned 2026–2028"
+elmstead_technologies,3:PASS 5:PASS 13:FAIL,3/3,,0,"- **Point 3 (R&D effectiveness) — PASS:** Elmstead generates **$1.56 of new-product sales per R&D dollar** versus the **$1.21 industry median**, a ~29% productivity premium. That indicates R&D spending is converting into commercially successful new products above peer norms, satisfying Fisher’s effectiveness test.
+
+- **Point 5 (profit margin) — PASS:** FY2025 operating margin of **11.7%** exceeds the **9.4% industry median** by **230 bps**. This points to better pricing/cost discipline and a healthier profitability cushion, consistent with Fisher’s margin quality criterion.
+
+- **Point 13 (growth without dilution) — FAIL:** Cash plus 12-quarter operating cash flow of **206.3M** covers only ~*"
+emberly_systems,3:PASS 5:PASS 13:FAIL,3/3,,0,"**Point 3 — R&D effectiveness: PASS.** Emberly generates $1.65 of new-product sales per R&D dollar versus an industry median of $1.33, indicating above-average conversion of R&D spending into commercialized new products. The premium suggests the R&D pipeline is productive and not merely expense-heavy.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 15.4% exceeds the industry median of 12.5%, showing better pricing power and/or cost discipline than peers. The margin gap supports profitability quality and operating execution.
+
+**Point 13 — Growth without dilution: FAIL.** Cash plus 12-quarter operating cash flow of $190,190k covers only about 83% of planned 2026–2028 capex of $2"
+everline_dynamics,3:PASS 5:FAIL 13:PASS,3/3,,0,"**Point 3 — PASS:** Everline generates **$2.57 of new-product sales per R&D dollar** versus an industry median of **$1.96**, indicating R&D is more productive than peers at converting spend into commercialized new products. This supports Fisher’s test that research be effectively exploited, not just funded.
+
+**Point 5 — FAIL:** FY2025 operating margin of **6.3%** is roughly **400 bps below** the **10.3%** industry median, pointing to weaker pricing power and/or cost control. Profitability does not meet Fisher’s margin criterion despite other strengths.
+
+**Point 13 — PASS:** Cash plus **12-quarter operating cash flow of $117.151M** covers planned **2026–2028 capex of $100.755M** by about **1."
+falcrest_technologies,3:PASS 5:FAIL 13:PASS,3/3,,0,"**Point 3 — R&D effectiveness: PASS**  
+Falcrest generates $1.48 of new-product sales per R&D dollar versus the industry median of $1.21, indicating its R&D spend is converting into commercial output more efficiently than peers. This supports Fisher’s concern that research be productive rather than merely large.
+
+**Point 5 — Profit margin: FAIL**  
+FY2025 operating margin of 6.3% trails the industry median of 9.4%, leaving Falcrest with weaker pricing power, cost discipline, or mix than competitors. The gap is material enough to fail Fisher’s profitability test despite any top-line or R&D strengths.
+
+**Point 13 — Growth without dilution: PASS**  
+Cash plus 12-quarter operating cash flow of $"
+fernhill_group,3:PASS 5:PASS 13:PASS,3/3,,0,"**Point 3 — R&D effectiveness: PASS.** Fernhill generates $2.54 of new-product sales per R&D dollar versus an industry median of $2.06, indicating above-average conversion of research spend into commercially viable products. That supports Fisher’s concern that R&D be productive rather than merely large.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 11.4% exceeds the industry median of 8.3% by roughly 310 bps. This suggests adequate pricing power and cost discipline, consistent with Fisher’s margin-quality test.
+
+**Point 13 — Growth without dilution: PASS.** Cash plus 12-quarter operating cash flow of $305.4M covers planned 2026–2028 capex of $228.1M by about 1.34x, leaving a"
+granite_group,3:PASS 5:PASS 13:FAIL,3/3,,0,"**Point 3 — R&D effectiveness: PASS.** New-product sales per R&D dollar of 1.37 is ~29% above the industry median of 1.06, indicating the R&D spend is converting into commercial output more efficiently than peers. We view this as evidence of productive innovation rather than just elevated R&D intensity.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 19.7% is 290 bps above the 16.8% industry median, pointing to better pricing, mix, or cost discipline than peers. The margin premium supports the quality of earnings and competitive positioning.
+
+**Point 13 — Growth without dilution: FAIL.** Cash plus 12-quarter operating cash flow of $293.3M covers only ~74% of planned 2026–2028"
+halcyon_works,3:FAIL 5:FAIL 13:FAIL,3/3,,0,"- **Point 3 (R&D effectiveness) — FAIL:** New-product sales per R&D dollar are $1.23 versus the industry median of $1.58, roughly 22% below peer efficiency. That suggests Halcyon Works is not converting R&D spend into commercially productive new products as effectively as competitors.
+
+- **Point 5 (profit margin) — FAIL:** FY2025 operating margin is 9.5% versus the industry median of 11.4%, a 1.9-point gap. The company is profitable but operates below peer profitability, pointing to weaker pricing power, cost discipline, or mix.
+
+- **Point 13 (growth without dilution) — FAIL:** Cash plus 12-quarter operating cash flow totals $142,190k against planned 2026–2028 capex of $202,694k, leaving a ~"
+hollins_group,3:PASS 5:PASS 13:PASS,3/3,,0,"**Point 3 — R&D effectiveness: PASS.** Hollins Group generates $1.36 of new-product sales per R&D dollar versus the industry median of $1.06, roughly 28% above peers. That spread suggests R&D spending is being commercialized efficiently rather than just sustained at scale.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 20.5% is 370 bps above the 16.8% industry median. The company is converting revenue into operating profit better than peers, implying relative pricing power and/or cost discipline.
+
+**Point 13 — Growth without dilution: PASS.** Cash plus 12-quarter operating cash flow of $379.9M covers planned 2026–2028 capex of $238.0M about 1.6x. That supports the growth plan"
+ironbark_technologies,3:FAIL 5:FAIL 13:PASS,3/3,,0,"**Point 3 (R&D effectiveness) — FAIL:** Ironbark generates $0.91 of new-product sales per R&D dollar versus an industry median of $1.21, roughly 25% below peer efficiency. This suggests its R&D spending is not converting into commercially successful new products at a competitive rate.
+
+**Point 5 (profit margin) — FAIL:** FY2025 operating margin of 5.8% trails the industry median of 9.4% by 3.6 percentage points, a roughly 38% relative gap. That points to weaker pricing power, cost control, or mix than peers and limits internal funding capacity.
+
+**Point 13 (growth without dilution) — PASS:** Cash plus 12-quarter operating cash flow of $142.7 million covers planned 2026–2028 capex of $99.96 m"
+juniper_industries,3:PASS 5:PASS 13:FAIL,3/3,,0,"- **Point 3 (R&D effectiveness) — PASS:** Juniper generates $1.63 of new-product sales per R&D dollar versus an industry median of $1.21, indicating above-average conversion of R&D spending into commercial output. That premium supports Fisher’s test that R&D is not just large but effective.
+
+- **Point 5 (profit margin) — PASS:** FY2025 operating margin of 11.6% exceeds the industry median of 9.4%, showing better-than-peer cost control and pricing power. The margin advantage is modest but sufficient to clear the checklist threshold.
+
+- **Point 13 (growth without dilution) — FAIL:** Cash plus 12-quarter operating cash flow of $269.9M is below planned 2026–2028 capex of $373.4M, leaving a rough"
+kestrel_technologies,3:PASS 5:PASS 13:PASS,3/3,,0,"**Point 3 — R&D effectiveness: PASS.** Kestrel generates $2.59 of new-product sales per R&D dollar versus the industry median of $2.06, roughly a 26% efficiency premium. That suggests R&D spending is translating into commercial output rather than just technical activity, which is the core of Fisher’s point.
+
+**Point 5 — Profit margin: PASS.** FY2025 operating margin of 10.0% exceeds the industry median of 8.3% by about 170 bps. The company is earning an above-median margin, indicating adequate pricing power and cost discipline rather than relying solely on volume growth.
+
+**Point 13 — Growth without dilution: PASS.** Cash plus 12-quarter operating cash flow of $275.3M covers planned 2026–202"
+lindale_holdings,3:FAIL 5:FAIL 13:PASS,3/3,,0,"- **Point 3 — R&D effectiveness: FAIL.** Lindale generates $1.61 of new-product sales per R&D dollar versus the industry median of $2.06, indicating weaker conversion of research spend into commercial output. This suggests R&D is not producing new products efficiently relative to peers.
+
+- **Point 5 — Profit margin: FAIL.** FY2025 operating margin of 4.5% is well below the 8.3% industry median, pointing to cost, pricing, or operating-leverage disadvantages. The gap is material and limits internal funding and downside resilience.
+
+- **Point 13 — Growth without dilution: PASS.** Cash plus 12-quarter operating cash flow of $96.4M covers planned 2026–2028 capex of $65.6M, a roughly 1.47x coverag"
+northwind_group,3:PASS 5:FAIL 13:PASS,3/3,,0,"**Point 3 — PASS:** Northwind generates 0.91 in new-product sales per R&D dollar versus an industry median of 0.79, roughly 15% better conversion. That indicates above-average R&D effectiveness and commercialization, so the Fisher criterion is met.
+
+**Point 5 — FAIL:** FY2025 operating margin is 12.8%, 230 bps below the 15.1% industry median. Northwind is less profitable than peers on an operating basis, pointing to weaker pricing, cost control, or mix, so it fails this margin test.
+
+**Point 13 — PASS:** Cash plus 12-quarter operating cash flow of 326,746k covers planned 2026–2028 capex of 240,371k by about 1.36x, leaving roughly 86,375k of headroom. That supports growth investment without r"
